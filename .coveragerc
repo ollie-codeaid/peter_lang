@@ -1,0 +1,5 @@
+[run]
+include = peter_lang/*
+omit = *migrations*, *tests*
+plugins =
+    django_coverage_plugin
