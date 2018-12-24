@@ -62,3 +62,4 @@ INSTALLED_APPS += ['django_extensions']  # noqa F405
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+ACCOUNT_EMAIL_VERIFICATION = 'none'
