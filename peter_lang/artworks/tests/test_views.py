@@ -7,7 +7,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import RequestFactory
 
 from ..models import Artwork
-from ..views import ArtworkCreate, ArtworkList
+from ..views import ArtworkCreate, ArtworkList, ArtworkDetail
 from .factories import ArtworkFactory
 
 pytestmark = pytest.mark.django_db
@@ -46,7 +46,7 @@ class TestArtworkCreate(AnonymousUserRedirectMixin):
     def test_GET_logged_in_user_is_not_redirected(
             self,
             user: settings.AUTH_USER_MODEL,
-            request_factory: RequestFactory
+            request_factory: RequestFactory,
     ):
         request = request_factory.get('/artwork/create/')
         request.user = user
@@ -79,7 +79,7 @@ class TestArtworkCreate(AnonymousUserRedirectMixin):
     def test_POST_requires_name(
             self,
             user: settings.AUTH_USER_MODEL,
-            request_factory: RequestFactory
+            request_factory: RequestFactory,
     ):
         data = {
                 'slug': 'test-art',
@@ -100,7 +100,7 @@ class TestArtworkCreate(AnonymousUserRedirectMixin):
     def test_POST_requires_image(
             self,
             user: settings.AUTH_USER_MODEL,
-            request_factory: RequestFactory
+            request_factory: RequestFactory,
     ):
         data = {
                 'name': 'Test Art',
@@ -130,7 +130,7 @@ class TestArtworkList(AnonymousUserRedirectMixin):
     def test_GET_returns_expected_artwork(
             self,
             user: settings.AUTH_USER_MODEL,
-            request_factory: RequestFactory
+            request_factory: RequestFactory,
     ):
         artwork = ArtworkFactory()
         request = request_factory.get('/artwork')
@@ -142,4 +142,20 @@ class TestArtworkList(AnonymousUserRedirectMixin):
         artwork_list = response.context_data['object_list']
         assert artwork_list.count() == 1
         assert artwork == artwork_list.first()
+
+
+class TestArtworkDetail:
+
+    def test_GET_returns_expected_artwork(
+            self,
+            request_factory: RequestFactory,
+    ):
+        artwork = ArtworkFactory()
+        request = request_factory.get('/artwork/')
+        request.user = AnonymousUser()
+
+        response = ArtworkDetail.as_view()(request, slug=artwork.slug)
+
+        assert response.status_code == 200
+        assert artwork == response.context_data['object']
 
