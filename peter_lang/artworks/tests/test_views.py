@@ -7,7 +7,8 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import RequestFactory
 
 from ..models import Artwork
-from ..views import ArtworkCreate
+from ..views import ArtworkCreate, ArtworkList
+from .factories import ArtworkFactory
 
 pytestmark = pytest.mark.django_db
 
@@ -116,3 +117,29 @@ class TestArtworkCreate(AnonymousUserRedirectMixin):
         assert response.status_code == 200
         assert Artwork.objects.count() == 0
         assert 'This field is required.' in response.context_data['form'].errors['image']
+
+
+class TestArtworkList(AnonymousUserRedirectMixin):
+    view_class = ArtworkList
+    expected_redirect_url = '/accounts/login/?next=/artwork/'
+
+    def test_GET_anonymous_user_is_redirected(self, request_factory: RequestFactory):
+        request = request_factory.get('/artwork/')
+        self._test_view_redirects_anonymous_user(request)
+
+    def test_GET_returns_expected_artwork(
+            self,
+            user: settings.AUTH_USER_MODEL,
+            request_factory: RequestFactory
+    ):
+        artwork = ArtworkFactory()
+        request = request_factory.get('/artwork')
+        request.user = user
+
+        response = ArtworkList.as_view()(request)
+
+        assert response.status_code == 200
+        artwork_list = response.context_data['object_list']
+        assert artwork_list.count() == 1
+        assert artwork == artwork_list.first()
+
