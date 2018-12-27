@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Create new artwork{% endblock %}
+
+{% block content %}
+  <h1>New artwork</h1>
+  <p>{{ form.errors }}</p>
+  <form class="form-horizontal" method="post" action="{% url 'artworks:create' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="control-group">
+      <div class="controls">
+        <button type="submit" class="btn">Create</button>
+      </div>
+    </div>
+  </form>
+{% endblock %}

@@ -11,6 +11,7 @@ class Artwork(models.Model):
     )
 
     name = models.CharField(max_length=128, unique=True)
+    image = models.ImageField()
     slug = models.SlugField(max_length=128, unique=True)
     height = models.IntegerField(blank=True, null=True)
     width = models.IntegerField(blank=True, null=True)
