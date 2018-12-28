@@ -4,39 +4,40 @@
 
 {% block content %}
 
-<div id="artCarousel" class="carousel slide" data-ride="carousel">
+<div class="row justify-content-center">
+    <div id="artCarousel" class="carousel slide col-md-9" data-ride="carousel">
 
-    <!-- The slideshow -->
-    <div class="carousel-inner">
-	{% for object in object_list %}
-	{% if forloop.first %}
-	<div class="carousel-item active">
-	    <img src="{{ object.image.url }}" alt="{{ object.name }}" width="100%">
-	    <div class="carousel-caption">
-		<h3><a href="/artwork/{{ object.slug }}/" class="text-dark bg-white">{{ object.name }}</a></h3>
+	<!-- The slideshow -->
+	<div class="carousel-inner">
+	    {% for object in object_list %}
+	    {% if forloop.first %}
+	    <div class="carousel-item active">
+		<img src="{{ object.image.url }}" alt="{{ object.name }}" width="100%">
+		<div class="carousel-caption">
+		    <h3><a href="/artwork/{{ object.slug }}/" class="text-dark bg-white">{{ object.name }}</a></h3>
+		</div>
 	    </div>
-	</div>
-	{% else %}
-	<div class="carousel-item">
-	    <img src="{{ object.image.url }}" alt="{{ object.name }}" width="100%">
-	    <div class="carousel-caption">
-		<h3><a href="/artwork/{{ object.slug }}/" class="text-dark bg-white">{{ object.name }}</a></h3>
+	    {% else %}
+	    <div class="carousel-item">
+		<img src="{{ object.image.url }}" alt="{{ object.name }}" width="100%">
+		<div class="carousel-caption">
+		    <h3><a href="/artwork/{{ object.slug }}/" class="text-dark bg-white">{{ object.name }}</a></h3>
+		</div>
 	    </div>
+	    {% endif %}
+	    {% endfor %}
 	</div>
-	{% endif %}
-	{% endfor %}
+
+	<!-- Left and right controls -->
+	<a class="carousel-control-prev" href="#artCarousel" data-slide="prev">
+	    <span class="carousel-control-prev-icon"></span>
+	</a>
+	<a class="carousel-control-next" href="#artCarousel" data-slide="next">
+	    <span class="carousel-control-next-icon"></span>
+	</a>
+
     </div>
-
-    <!-- Left and right controls -->
-    <a class="carousel-control-prev" href="#artCarousel" data-slide="prev">
-	<span class="carousel-control-prev-icon"></span>
-    </a>
-    <a class="carousel-control-next" href="#artCarousel" data-slide="next">
-	<span class="carousel-control-next-icon"></span>
-    </a>
-
 </div>
-
 {% endblock %}
 
 

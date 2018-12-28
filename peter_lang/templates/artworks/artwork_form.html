@@ -1,18 +1,36 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}Create new artwork{% endblock %}
+{% block title %}
+{% if object %}
+Update {{ object.name }}
+{% else %}
+Create new artwork
+{% endif %}
+{% endblock %}
 
 {% block content %}
-  <h1>New artwork</h1>
-  <p>{{ form.errors }}</p>
-  <form class="form-horizontal" method="post" action="{% url 'artworks:create' %}" enctype="multipart/form-data">
+{% if object %}
+<h1>Update {{ object.name }}</h1>
+{% else %}
+<h1>New artwork</h1>
+{% endif %}
+<p>{{ form.errors }}</p>
+{% if object %}
+<form class="form-horizontal" method="post" action="{% url 'artworks:update' artwork.slug%}" enctype="multipart/form-data">
+{% else %}
+<form class="form-horizontal" method="post" action="{% url 'artworks:create' %}" enctype="multipart/form-data">
+{% endif %}
     {% csrf_token %}
     {{ form|crispy }}
     <div class="control-group">
-      <div class="controls">
-        <button type="submit" class="btn">Create</button>
-      </div>
+	<div class="controls">
+	    {% if object %}
+	    <button type="submit" class="btn">Update</button>
+	    {% else %}
+	    <button type="submit" class="btn">Create</button>
+	    {% endif %}
+	</div>
     </div>
-  </form>
+</form>
 {% endblock %}

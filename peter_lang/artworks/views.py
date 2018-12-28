@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import (
         CreateView,
         DeleteView,
+        UpdateView,
 )
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
@@ -44,4 +45,13 @@ class ArtworkDelete(
         DeleteView,
 ):
     model = Artwork
+    success_url = reverse_lazy('artworks:list')
+
+
+class ArtworkUpdate(
+        LoginRequiredMixin,
+        UpdateView,
+):
+    model = Artwork
+    form_class = ArtworkForm
     success_url = reverse_lazy('artworks:list')

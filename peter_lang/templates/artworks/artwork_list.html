@@ -5,17 +5,12 @@
 {% block content %}
 <h1>All artwork</h1>
 <h3><a href="/artwork/create">Create new</a></h3>
-<table>
-    <tr>
-	<th>Name</th>
-	<th>Edit</th>
-	<th>Delete</th>
-    </tr>
+<table class="table">
     {% for artwork in object_list %}
     <tr>
 	<td><a href="/artwork/{{ artwork.slug }}">{{ artwork.name }}</a></td>
-	<td></td>
-	<td><a href="/artwork/{{ artwork.slug }}/delete">X</a></td>
+	<td><a href="/artwork/{{ artwork.slug }}/update">Update</a></td>
+	<td><a href="/artwork/{{ artwork.slug }}/delete">Delete</a></td>
     </tr>
     {% endfor %}
 </table>

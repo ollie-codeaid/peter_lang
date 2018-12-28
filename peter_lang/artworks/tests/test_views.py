@@ -11,7 +11,8 @@ from ..views import (
         ArtworkCreate,
         ArtworkList,
         ArtworkDetail,
-        ArtworkDelete
+        ArtworkDelete,
+        ArtworkUpdate,
 )
 from .factories import ArtworkFactory
 
@@ -191,3 +192,35 @@ class TestArtworkDelete(AnonymousUserRedirectMixin):
 
         assert Artwork.objects.count() == 0
 
+
+class TestArtworkUpdate(AnonymousUserRedirectMixin):
+    view_class = ArtworkUpdate
+
+    def test_GET_anonymous_user_is_redirected(self, request_factory: RequestFactory):
+        artwork = ArtworkFactory()
+        request = request_factory.get(f'/artwork/{artwork.slug}/update')
+        self._test_view_redirects_anonymous_user(request)
+
+    def test_POST_anonymous_user_is_redirected(self, request_factory: RequestFactory):
+        artwork = ArtworkFactory()
+        request = request_factory.post(f'/artwork/{artwork.slug}/update')
+        self._test_view_redirects_anonymous_user(request)
+
+    def test_authenticated_user_can_update(
+            self,
+            user: settings.AUTH_USER_MODEL,
+            request_factory: RequestFactory,
+    ):
+        artwork = ArtworkFactory()
+        data = {
+                'name': 'New name',
+                'slug': 'new-slug',
+        }
+        request = request_factory.post(f'/artwork/{artwork.slug}/update', data)
+        request.user = user
+
+        ArtworkUpdate.as_view()(request, slug=artwork.slug)
+
+        artwork.refresh_from_db()
+        assert artwork.name == 'New name'
+        assert artwork.slug == 'new-slug'
