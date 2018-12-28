@@ -18,7 +18,7 @@ class ArtworkCreate(
     model = Artwork
     form_class = ArtworkForm
     login_url = '/accounts/login/'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('artworks:list')
 
 
 class ArtworkList(
@@ -26,6 +26,13 @@ class ArtworkList(
         ListView,
 ):
     model = Artwork
+
+
+class PublicArtworkList(
+        ListView,
+):
+    model = Artwork
+    template_name = 'artworks/artwork_carousel.html'
 
 
 class ArtworkDetail(DetailView):
@@ -37,4 +44,4 @@ class ArtworkDelete(
         DeleteView,
 ):
     model = Artwork
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('artworks:list')
