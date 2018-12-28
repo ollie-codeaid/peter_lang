@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1>All artwork</h1>
-<h3><a href="/artwork/create/">Create new</a></h3>
+<h3><a href="/artwork/create">Create new</a></h3>
 <table>
     <tr>
 	<th>Name</th>
@@ -15,7 +15,7 @@
     <tr>
 	<td><a href="/artwork/{{ artwork.slug }}">{{ artwork.name }}</a></td>
 	<td></td>
-	<td></td>
+	<td><a href="/artwork/{{ artwork.slug }}/delete">X</a></td>
     </tr>
     {% endfor %}
 </table>

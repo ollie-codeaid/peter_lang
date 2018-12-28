@@ -7,7 +7,12 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import RequestFactory
 
 from ..models import Artwork
-from ..views import ArtworkCreate, ArtworkList, ArtworkDetail
+from ..views import (
+        ArtworkCreate,
+        ArtworkList,
+        ArtworkDetail,
+        ArtworkDelete
+)
 from .factories import ArtworkFactory
 
 pytestmark = pytest.mark.django_db
@@ -24,22 +29,17 @@ class AnonymousUserRedirectMixin:
     def view_class(self):
         raise NotImplementedError
 
-    @property
-    def expected_redirect_url(self):
-        raise NotImplementedError
-
     def _test_view_redirects_anonymous_user(self, request):
         request.user = AnonymousUser()
 
         response = self.view_class.as_view()(request)
 
         assert response.status_code == 302
-        assert response.url == self.expected_redirect_url
+        assert response.url.startswith('/accounts/login/?next=')
 
 
 class TestArtworkCreate(AnonymousUserRedirectMixin):
     view_class = ArtworkCreate
-    expected_redirect_url = '/accounts/login/?next=/artwork/create/'
 
     def test_GET_anonymous_user_is_redirected(self, request_factory: RequestFactory):
         request = request_factory.get('/artwork/create/')
@@ -127,7 +127,6 @@ class TestArtworkCreate(AnonymousUserRedirectMixin):
 
 class TestArtworkList(AnonymousUserRedirectMixin):
     view_class = ArtworkList
-    expected_redirect_url = '/accounts/login/?next=/artwork/'
 
     def test_GET_anonymous_user_is_redirected(self, request_factory: RequestFactory):
         request = request_factory.get('/artwork/')
@@ -164,4 +163,31 @@ class TestArtworkDetail:
 
         assert response.status_code == 200
         assert artwork == response.context_data['object']
+
+
+class TestArtworkDelete(AnonymousUserRedirectMixin):
+    view_class = ArtworkDelete
+
+    def test_GET_anonymous_user_is_redirected(self, request_factory: RequestFactory):
+        artwork = ArtworkFactory()
+        request = request_factory.get(f'/artwork/{artwork.slug}/delete')
+        self._test_view_redirects_anonymous_user(request)
+
+    def test_POST_anonymous_user_is_redirected(self, request_factory: RequestFactory):
+        artwork = ArtworkFactory()
+        request = request_factory.post(f'/artwork/{artwork.slug}/delete')
+        self._test_view_redirects_anonymous_user(request)
+
+    def test_authenticated_user_can_delete(
+            self,
+            user: settings.AUTH_USER_MODEL,
+            request_factory: RequestFactory,
+    ):
+        artwork = ArtworkFactory()
+        request = request_factory.post(f'/artwork/{artwork.slug}/delete')
+        request.user = user
+
+        response = ArtworkDelete.as_view()(request, slug=artwork.slug)
+
+        assert Artwork.objects.count() == 0
 
