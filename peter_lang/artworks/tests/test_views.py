@@ -19,8 +19,14 @@ test_image = SimpleUploadedFile(
 
 
 class AnonymousUserRedirectMixin:
-    view_class = None
-    expected_redirect_url = None
+
+    @property
+    def view_class(self):
+        raise NotImplementedError
+
+    @property
+    def expected_redirect_url(self):
+        raise NotImplementedError
 
     def _test_view_redirects_anonymous_user(self, request):
         request.user = AnonymousUser()
