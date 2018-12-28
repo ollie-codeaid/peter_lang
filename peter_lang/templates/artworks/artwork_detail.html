@@ -3,10 +3,14 @@
 {% block title %}{{ object.name }}{% endblock %}
 
 {% block content %}
-<h1>{{ object.name }}</h1>
-<p>Height: {{ object.height }}</p>
-<p>Width: {{ object.width }}</p>
-<p>Unit: {{ object.unit }}</p>
-<p>Price: £{{ object.price }}</p>
-<img src="{{ object.image.url }}" alt="{{ object.name.name }}"/>
+<div class="row justify-content-center">
+    <div class="col-md-9 text-center">
+	<h1>{{ object.name }}</h1>
+	<p>Height: {{ object.height }}</p>
+	<p>Width: {{ object.width }}</p>
+	<p>Unit: {{ object.unit }}</p>
+	<p>Price: £{{ object.price }}</p>
+	<img src="{{ object.image.url }}" alt="{{ object.name.name }}" width="100%"/>
+    </div>
+</div>
 {% endblock %}
