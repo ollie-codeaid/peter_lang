@@ -9,6 +9,7 @@ from ..models import Article
 from ..views import (
         ArticleCreate,
         ArticleList,
+        ArticleDetail,
 )
 from .factories import ArticleFactory
 
@@ -160,5 +161,21 @@ class TestArticleList(AnonymousUserRedirectMixin):
         article_list = response.context_data['object_list']
         assert article_list.count() == 1
         assert article == article_list.first()
+
+
+class TestArticleDetail:
+
+    def test_GET_returns_expected_article(
+            self,
+            request_factory: RequestFactory,
+    ):
+        article = ArticleFactory()
+        request = request_factory.get('/article/')
+        request.user = AnonymousUser()
+
+        response = ArticleDetail.as_view()(request, slug=article.slug)
+
+        assert response.status_code == 200
+        assert article == response.context_data['object']
 
 
