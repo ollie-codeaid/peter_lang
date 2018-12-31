@@ -27,6 +27,10 @@ urlpatterns = [
         "artwork/",
         include("peter_lang.artworks.urls", namespace="artworks"),
     ),
+    path(
+        "articles/",
+        include("peter_lang.articles.urls", namespace="articles"),
+    ),
 ] + static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+{% if object %}
+Update {{ object.name }}
+{% else %}
+Create new article
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if object %}
+<h1>Update {{ object.name }}</h1>
+{% else %}
+<h1>New article</h1>
+{% endif %}
+<p>{{ form.errors }}</p>
+{% if object %}
+<form class="form-horizontal" method="post" action="{% url 'articles:update' object.pk %}">
+{% else %}
+<form class="form-horizontal" method="post" action="{% url 'articles:create' %}">
+{% endif %}
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="control-group">
+	<div class="controls">
+	    {% if object %}
+	    <button type="submit" class="btn">Update</button>
+	    {% else %}
+	    <button type="submit" class="btn">Create</button>
+	    {% endif %}
+	</div>
+    </div>
+</form>
+{% endblock %}
