@@ -6,7 +6,6 @@ from .views import (
         ArtworkList,
         ArtworkDelete,
         ArtworkUpdate,
-        PublicArtworkList,
 )
 
 app_name = 'artworks'

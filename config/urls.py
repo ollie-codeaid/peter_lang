@@ -5,15 +5,7 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from django.views import defaults as default_views
 
-from peter_lang.artworks.views import PublicArtworkList
-
 urlpatterns = [
-    path("", PublicArtworkList.as_view(), name="home"),
-    path(
-        "about/",
-        TemplateView.as_view(template_name="pages/about.html"),
-        name="about",
-    ),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
@@ -23,6 +15,12 @@ urlpatterns = [
     ),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
+    path("", include("peter_lang.home.urls")),
+    path(
+        "about/",
+        TemplateView.as_view(template_name="pages/about.html"),
+        name="about",
+    ),
     path(
         "artwork/",
         include("peter_lang.artworks.urls", namespace="artworks"),

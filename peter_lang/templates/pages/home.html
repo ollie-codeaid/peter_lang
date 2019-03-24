@@ -1,1 +1,62 @@
 {% extends "base.html" %}
+
+{% block title %}Peter Lang{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-9 text-justify">
+	<p><img style="max-width:320px;float:left;padding-right:3%;padding-bottom:3%;padding-top:1.5%" src="/static/images/about/PeterLangPortraitBW.jpg" alt="Peter Lang Portrait BW"></p>
+	<p>
+	Peter divides his time between art and animation. Having spent many years making cartoons for children&rsquo;s television (Ludwig, Pigeon Street, Vision On, Rosie and Jim, Tronji, Bonny Banana and Mo and DipDap), his visuals tend to be friendly, accessible and happy. Expect wit, mixed with a sense of the absurd &ndash; a finely judged balance of humour and seriousness.
+        </p>
+	<p>
+	    <a href="about/">Read more</a>
+	</p>
+    </div>
+</div>
+
+<hr/>
+
+<div class="row justify-content-center">
+    <div id="artCarousel" class="carousel slide carousel-fade col-md-9 bg-dark" data-ride="carousel">
+
+	<!-- The slideshow -->
+	<div class="carousel-inner">
+	    {% for object in object_list %}
+	    {% if forloop.first %}
+	    <div class="carousel-item active text-center">
+		<img class="img-fluid" src="{{ object.image.url }}" alt="{{ object.name }}">
+	    </div>
+	    {% else %}
+	    <div class="carousel-item text-center">
+		<img class="img-fluid" src="{{ object.image.url }}" alt="{{ object.name }}">
+	    </div>
+	    {% endif %}
+	    {% endfor %}
+	</div>
+
+	<!-- Left and right controls -->
+	<a class="carousel-control-prev" href="#artCarousel" data-slide="prev">
+	    <span class="carousel-control-prev-icon"></span>
+	</a>
+	<a class="carousel-control-next" href="#artCarousel" data-slide="next">
+	    <span class="carousel-control-next-icon"></span>
+	</a>
+
+    </div>
+</div>
+
+<hr/>
+
+<div class="row justify-content-center">
+    <div class="col-md-9 text-justify">
+	{% for article in latest_articles %}
+	<h1><a href="articles/{{ article.slug }}">{{ article.name }}</a></h1>
+	<p>{{ article.created_at }}</p>
+	{% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+

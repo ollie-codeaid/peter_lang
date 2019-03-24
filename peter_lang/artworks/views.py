@@ -29,13 +29,6 @@ class ArtworkList(
     model = Artwork
 
 
-class PublicArtworkList(
-        ListView,
-):
-    model = Artwork
-    template_name = 'artworks/artwork_carousel.html'
-
-
 class ArtworkDetail(DetailView):
     model = Artwork
 
