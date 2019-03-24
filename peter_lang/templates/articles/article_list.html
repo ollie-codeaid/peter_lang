@@ -3,17 +3,21 @@
 {% block title %}All articles{% endblock %}
 
 {% block content %}
-<h1>All articles</h1>
-<h3><a href="/articles/create">Create new</a></h3>
-<table class="table">
-    {% for article in object_list %}
-    <tr>
-	<td><a href="/articles/{{ article.slug }}">{{ article.name }}</a></td>
-	<td><a href="/articles/{{ article.slug }}/update">Update</a></td>
-	<td><a href="/articles/{{ article.slug }}/delete">Delete</a></td>
-    </tr>
-    {% endfor %}
-</table>
+{% for article in object_list %}
+<div class="row justify-content-center">
+    <div class="col-md-9 text-center">
+	<h1><a href="{{ article.slug }}">{{ article.name }}</a><h1>
+	<h5>{{ article.created_at }}</h5>
+    </div>
+    <div class="col-md-6 text-justify">
+	<p>{{ article.preview_text }}</p>
+    </div>
+    <div class="col-md-3">
+	<img class=w-100" src="{{ article.preview_picture.image.url }}" alt="{{ article.preview_picture.name }}">
+    </div>
+</div>
+<hr/>
+{% endfor %}
 {% endblock %}
 
 
