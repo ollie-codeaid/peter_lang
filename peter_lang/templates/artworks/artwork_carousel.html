@@ -5,24 +5,18 @@
 {% block content %}
 
 <div class="row justify-content-center">
-    <div id="artCarousel" class="carousel slide col-md-9" data-ride="carousel">
+    <div id="artCarousel" class="carousel slide carousel-fade col-md-9 bg-dark" data-ride="carousel">
 
 	<!-- The slideshow -->
 	<div class="carousel-inner">
 	    {% for object in object_list %}
 	    {% if forloop.first %}
 	    <div class="carousel-item active text-center">
-		<h1>{{ object.name }}</h1>
-		<a href="/artwork/{{ object.slug }}/">
-		    <img class="w-100" src="{{ object.image.url }}" alt="{{ object.name }}">
-		</a>
+		<img class="img-fluid" src="{{ object.image.url }}" alt="{{ object.name }}">
 	    </div>
 	    {% else %}
 	    <div class="carousel-item text-center">
-		<h1>{{ object.name }}</h1>
-		<a href="/artwork/{{ object.slug }}/">
-		    <img class="w-100" src="{{ object.image.url }}" alt="{{ object.name }}">
-		</a>
+		<img class="img-fluid" src="{{ object.image.url }}" alt="{{ object.name }}">
 	    </div>
 	    {% endif %}
 	    {% endfor %}
