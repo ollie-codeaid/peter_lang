@@ -12,28 +12,51 @@
 	<p><img style="max-width:320px;float:left;padding-right:3%;padding-bottom:3%;padding-top:1.5%" src="/static/images/about/PeterLangPortraitBW.jpg" alt="Peter Lang Portrait BW"></p>
 	<p>
 	Peter divides his time between art and animation. Having spent many years making cartoons for children&rsquo;s television (Ludwig, Pigeon Street, Vision On, Rosie and Jim, Tronji, Bonny Banana and Mo and DipDap), his visuals tend to be friendly, accessible and happy. Expect wit, mixed with a sense of the absurd &ndash; a finely judged balance of humour and seriousness.
-        </p>
+	</p>
     </div>
     <div class="col-md-9 text-right">
 	<p>
-	    <a href="about/">...read more</a>
+	<a href="about/">...read more</a>
 	</p>
     </div>
 </div>
 
 <hr/>
 
+{% if latest_article %}
 <div class="row justify-content-center">
     <div class="col-md-9 text-center">
-	<h1>Latest news: <strong>{{ latest_article.name }}</strong></h1>
+	<h1>Latest news: <a href="articles/{{ latest_article.slug }}">{{ latest_article.name }}</a></h1>
 	<h3>{{ latest_article.created_at }}</h3>
     </div>
+</div>
+
+{% if latest_article.preview_picture %}
+<div class="row justify-content-center">
+    <div class="col-md-6 text-justify">
+	<p>{{ latest_article.preview_text }}</p>
+    </div>
+    <div class="col-md-3">
+	<img class="w-100" src="{{ latest_article.preview_picture.image.url }}" alt="{{ latest_article.preview_picture.name }}">
+    </div>
+</div>
+{% else %}
+<div class="row justify-content-center">
+    <div class="col-md-9 text-justify">
+	<p>{{ latest_article.preview_text }}</p>
+    </div>
+</div>
+{% endif %}
+
+<div class="row justify-content-center">
     <div class="col-md-9 text-right">
-	<h3><a href="articles">...older news</a></h3>
+	<p><a href="articles">...older news</a></p>
     </div>
 </div>
 
 <hr/>
+
+{% endif %}
 
 <div class="row justify-content-center">
     <div id="artCarousel" class="carousel slide carousel-fade col-md-9 bg-dark" data-ride="carousel">

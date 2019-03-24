@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}All articles{% endblock %}
+
+{% block content %}
+<h1>All articles</h1>
+<h3><a href="/articles/create">Create new</a></h3>
+<table class="table">
+    {% for article in object_list %}
+    <tr>
+	<td><a href="/articles/{{ article.slug }}">{{ article.name }}</a></td>
+	<td><a href="/articles/{{ article.slug }}/update">Update</a></td>
+	<td><a href="/articles/{{ article.slug }}/delete">Delete</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
+
+

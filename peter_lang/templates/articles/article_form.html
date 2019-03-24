@@ -17,7 +17,7 @@ Create new article
 {% endif %}
 <p>{{ form.errors }}</p>
 {% if object %}
-<form class="form-horizontal" method="post" action="{% url 'articles:update' object.pk %}">
+<form class="form-horizontal" method="post" action="{% url 'articles:update' object.slug %}">
 {% else %}
 <form class="form-horizontal" method="post" action="{% url 'articles:create' %}">
 {% endif %}

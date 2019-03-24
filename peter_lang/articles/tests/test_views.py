@@ -10,8 +10,12 @@ from ..views import (
         ArticleCreate,
         ArticleList,
         ArticleDetail,
+        ArticleDelete,
+        ArticleUpdate,
+        ArticlePublicList,
 )
 from .factories import ArticleFactory
+from peter_lang.artworks.tests.factories import ArtworkFactory
 
 pytestmark = pytest.mark.django_db
 
@@ -35,11 +39,11 @@ class TestArticleCreate(AnonymousUserRedirectMixin):
     view_class = ArticleCreate
 
     def test_GET_anonymous_user_is_redirected(self, request_factory: RequestFactory):
-        request = request_factory.get('/article/create/')
+        request = request_factory.get('/articles/create/')
         self._test_view_redirects_anonymous_user(request)
 
     def test_POST_anonymous_user_is_redirected(self, request_factory: RequestFactory):
-        request = request_factory.post('/article/create/')
+        request = request_factory.post('/articles/create/')
         self._test_view_redirects_anonymous_user(request)
 
     def test_GET_logged_in_user_is_not_redirected(
@@ -47,7 +51,7 @@ class TestArticleCreate(AnonymousUserRedirectMixin):
             user: settings.AUTH_USER_MODEL,
             request_factory: RequestFactory,
     ):
-        request = request_factory.get('/article/create/')
+        request = request_factory.get('/articles/create/')
         request.user = user
 
         response = ArticleCreate.as_view()(request)
@@ -59,10 +63,13 @@ class TestArticleCreate(AnonymousUserRedirectMixin):
             user: settings.AUTH_USER_MODEL,
             request_factory: RequestFactory
     ):
+        artwork = ArtworkFactory()
         data = {
                 'name': 'Test Article',
                 'slug': 'test-article',
                 'text': 'Some test text',
+                'preview_text': 'Some preview text',
+                'preview_picture': artwork.pk,
         }
         request = request_factory.post(
                 '/article/create/',
@@ -85,7 +92,7 @@ class TestArticleCreate(AnonymousUserRedirectMixin):
                 'text': 'Some test text',
         }
         request = request_factory.post(
-                '/article/create/',
+                '/articles/create/',
                 data,
         )
         request.user = user
@@ -106,7 +113,7 @@ class TestArticleCreate(AnonymousUserRedirectMixin):
                 'text': 'Some test text',
         }
         request = request_factory.post(
-                '/article/create/',
+                '/articles/create/',
                 data,
         )
         request.user = user
@@ -127,7 +134,7 @@ class TestArticleCreate(AnonymousUserRedirectMixin):
                 'slug': 'test-article',
         }
         request = request_factory.post(
-                '/article/create/',
+                '/articles/create/',
                 data,
         )
         request.user = user
@@ -146,7 +153,7 @@ class TestArticleList(AnonymousUserRedirectMixin):
         request = request_factory.get('/articles/manage/')
         self._test_view_redirects_anonymous_user(request)
 
-    def test_GET_returns_expected_artwork(
+    def test_GET_returns_expected_article(
             self,
             user: settings.AUTH_USER_MODEL,
             request_factory: RequestFactory,
@@ -163,6 +170,36 @@ class TestArticleList(AnonymousUserRedirectMixin):
         assert article == article_list.first()
 
 
+class TestArticlePublicList:
+    def test_GET_anonymous_returns_expected_article(self, request_factory: RequestFactory):
+        article = ArticleFactory()
+        request = request_factory.get('/articles/')
+        request.user = AnonymousUser()
+
+        response = ArticlePublicList.as_view()(request)
+
+        assert response.status_code == 200
+        article_list = response.context_data['object_list']
+        assert article_list.count() == 1
+        assert article == article_list.first()
+
+    def test_GET_returns_expected_article(
+            self,
+            user: settings.AUTH_USER_MODEL,
+            request_factory: RequestFactory,
+    ):
+        article = ArticleFactory()
+        request = request_factory.get('/articles/')
+        request.user = user
+
+        response = ArticlePublicList.as_view()(request)
+
+        assert response.status_code == 200
+        article_list = response.context_data['object_list']
+        assert article_list.count() == 1
+        assert article == article_list.first()
+
+
 class TestArticleDetail:
 
     def test_GET_returns_expected_article(
@@ -170,7 +207,7 @@ class TestArticleDetail:
             request_factory: RequestFactory,
     ):
         article = ArticleFactory()
-        request = request_factory.get('/article/')
+        request = request_factory.get('/articles/')
         request.user = AnonymousUser()
 
         response = ArticleDetail.as_view()(request, slug=article.slug)
@@ -179,3 +216,68 @@ class TestArticleDetail:
         assert article == response.context_data['object']
 
 
+class TestArticleDelete(AnonymousUserRedirectMixin):
+    view_class = ArticleDelete
+
+    def test_GET_anonymous_user_is_redirected(self, request_factory: RequestFactory):
+        article = ArticleFactory()
+        request = request_factory.get(f'/articles/{article.slug}/delete')
+        self._test_view_redirects_anonymous_user(request)
+
+    def test_POST_anonymous_user_is_redirected(self, request_factory: RequestFactory):
+        article = ArticleFactory()
+        request = request_factory.post(f'/articles/{article.slug}/delete')
+        self._test_view_redirects_anonymous_user(request)
+
+    def test_authenticated_user_can_delete(
+            self,
+            user: settings.AUTH_USER_MODEL,
+            request_factory: RequestFactory,
+    ):
+        article = ArticleFactory()
+        request = request_factory.post(f'/articles/{article.slug}/delete')
+        request.user = user
+
+        response = ArticleDelete.as_view()(request, slug=article.slug)
+
+        assert Article.objects.count() == 0
+
+
+class TestArticleUpdate(AnonymousUserRedirectMixin):
+    view_class = ArticleUpdate
+
+    def test_GET_anonymous_user_is_redirected(self, request_factory: RequestFactory):
+        article = ArticleFactory()
+        request = request_factory.get(f'/articles/{article.slug}/update')
+        self._test_view_redirects_anonymous_user(request)
+
+    def test_POST_anonymous_user_is_redirected(self, request_factory: RequestFactory):
+        article = ArticleFactory()
+        request = request_factory.post(f'/articles/{article.slug}/update')
+        self._test_view_redirects_anonymous_user(request)
+
+    def test_authenticated_user_can_update(
+            self,
+            user: settings.AUTH_USER_MODEL,
+            request_factory: RequestFactory,
+    ):
+        article = ArticleFactory()
+        artwork = ArtworkFactory()
+        data = {
+                'name': 'Test Article',
+                'slug': 'test-article',
+                'text': 'Some test text',
+                'preview_text': 'Some preview text',
+                'preview_picture': artwork.pk,
+        }
+        request = request_factory.post(f'/articles/{article.slug}/update', data)
+        request.user = user
+
+        ArticleUpdate.as_view()(request, slug=article.slug)
+
+        article.refresh_from_db()
+        assert article.name == 'Test Article'
+        assert article.slug == 'test-article'
+        assert article.text == 'Some test text'
+        assert article.preview_text == 'Some preview text'
+        assert article.preview_picture == artwork

@@ -10,4 +10,6 @@ class ArticleForm(ModelForm):
                 'name',
                 'slug',
                 'text',
+                'preview_picture',
+                'preview_text',
         ]
