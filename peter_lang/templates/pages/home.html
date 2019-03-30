@@ -8,6 +8,9 @@
     <div class="col-md-9 text-center">
 	<h1>This is Peter</h1>
     </div>
+    <div class="col-md-9 text-center">
+	<h5>He's not interested in your cookies</h5>
+    </div>
     <div class="col-md-9 text-justify">
 	<p><img style="max-width:320px;float:left;padding-right:3%;padding-bottom:3%;padding-top:1.5%" src="/static/images/about/PeterLangPortraitBW.jpg" alt="Peter Lang Portrait BW"></p>
 	<p>
@@ -62,7 +65,7 @@
     <div id="artCarousel" class="carousel slide carousel-fade col-md-9 bg-dark" data-ride="carousel">
 
 	<!-- The slideshow -->
-	<div class="carousel-inner">
+	<div class="carousel-inner d-flex h-100 align-items-center">
 	    {% for object in object_list %}
 	    {% if forloop.first %}
 	    <div class="carousel-item active text-center">
