@@ -10,6 +10,10 @@
 	<h5>{{ article.created_at|date:"d F Y" }}</h5>
 	<br>
     </div>
+</div>
+
+{% if article.preview_picture %}
+<div class="row justify-content-center">
     <div class="col-md-6 text-justify">
 	<p>{{ article.preview_text }}</p>
     </div>
@@ -17,6 +21,13 @@
 	<img class=w-100" src="{{ article.preview_picture.image.url }}" alt="{{ article.preview_picture.name }}">
     </div>
 </div>
+{% else %}
+<div class="row justify-content-center">
+    <div class="col-md-9 text-justify">
+	<p>{{ latest_article.preview_text }}</p>
+    </div>
+</div>
+{% endif %}
 {% if not forloop.last %}
 <hr/>
 {% endif %}
