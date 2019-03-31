@@ -29,10 +29,6 @@ class ArtworkList(
     model = Artwork
 
 
-class ArtworkDetail(DetailView):
-    model = Artwork
-
-
 class ArtworkDelete(
         LoginRequiredMixin,
         DeleteView,

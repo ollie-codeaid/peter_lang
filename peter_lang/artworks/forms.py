@@ -10,8 +10,4 @@ class ArtworkForm(ModelForm):
                 'name',
                 'slug',
                 'image',
-                'height',
-                'width',
-                'unit',
-                'price',
         ]

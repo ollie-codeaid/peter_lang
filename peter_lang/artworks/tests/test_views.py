@@ -10,7 +10,6 @@ from ..models import Artwork
 from ..views import (
         ArtworkCreate,
         ArtworkList,
-        ArtworkDetail,
         ArtworkDelete,
         ArtworkUpdate,
 )
@@ -148,22 +147,6 @@ class TestArtworkList(AnonymousUserRedirectMixin):
         artwork_list = response.context_data['object_list']
         assert artwork_list.count() == 1
         assert artwork == artwork_list.first()
-
-
-class TestArtworkDetail:
-
-    def test_GET_returns_expected_artwork(
-            self,
-            request_factory: RequestFactory,
-    ):
-        artwork = ArtworkFactory()
-        request = request_factory.get('/artwork/')
-        request.user = AnonymousUser()
-
-        response = ArtworkDetail.as_view()(request, slug=artwork.slug)
-
-        assert response.status_code == 200
-        assert artwork == response.context_data['object']
 
 
 class TestArtworkDelete(AnonymousUserRedirectMixin):
