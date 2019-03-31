@@ -12,4 +12,5 @@ class ArticleForm(ModelForm):
                 'text',
                 'preview_picture',
                 'preview_text',
+                'is_published',
         ]

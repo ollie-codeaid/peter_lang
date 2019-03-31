@@ -11,6 +11,7 @@ class Article(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     preview_picture = models.ForeignKey(Artwork, on_delete=models.SET_NULL, null=True)
     preview_text = models.TextField()
+    is_published = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name

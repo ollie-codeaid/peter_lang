@@ -29,10 +29,16 @@ class ArticleList(
     model = Article
     template_name = 'articles/article_management_list.html'
 
+    def get_queryset(self):
+        return super().get_queryset().order_by('-created_at')
+
 
 class ArticlePublicList(ListView):
     model = Article
     template_name = 'articles/article_list.html'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(is_published=True).order_by('-created_at')
 
 
 class ArticleDetail(DetailView):

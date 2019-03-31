@@ -9,6 +9,7 @@
     {% for article in object_list %}
     <tr>
 	<td><a href="/articles/{{ article.slug }}">{{ article.name }}</a></td>
+	<td>{% if article.is_published %}Public{% else %}Private{% endif %}</td>
 	<td><a href="/articles/{{ article.slug }}/update">Update</a></td>
 	<td><a href="/articles/{{ article.slug }}/delete">Delete</a></td>
     </tr>

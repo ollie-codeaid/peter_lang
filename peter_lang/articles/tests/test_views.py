@@ -199,6 +199,41 @@ class TestArticlePublicList:
         assert article_list.count() == 1
         assert article == article_list.first()
 
+    def test_private_article_not_shown(
+            self,
+            user: settings.AUTH_USER_MODEL,
+            request_factory: RequestFactory,
+    ):
+        article = ArticleFactory()
+        ArticleFactory(is_published=False)
+        request = request_factory.get('/articles/')
+        request.user = user
+
+        response = ArticlePublicList.as_view()(request)
+
+        assert response.status_code == 200
+        article_list = response.context_data['object_list']
+        assert article_list.count() == 1
+        assert article == article_list.first()
+
+    def test_articles_returned_in_descending_date_order(
+            self,
+            user: settings.AUTH_USER_MODEL,
+            request_factory: RequestFactory,
+    ):
+        oldest_article = ArticleFactory()
+        latest_article = ArticleFactory()
+        request = request_factory.get('/articles/')
+        request.user = user
+
+        response = ArticlePublicList.as_view()(request)
+
+        assert response.status_code == 200
+        article_list = response.context_data['object_list']
+        assert article_list.count() == 2
+        assert oldest_article == article_list.last()
+        assert latest_article == article_list.first()
+
 
 class TestArticleDetail:
 
