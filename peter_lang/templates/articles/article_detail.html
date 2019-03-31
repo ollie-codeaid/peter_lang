@@ -6,6 +6,8 @@
 <div class="row justify-content-center">
     <div class="col-md-9 text-center">
 	<h1>{{ object.name }}</h1>
+	<h5>{{ object.created_at|date:"d F Y" }}</h5>
+	<br>
 	<p>{{ object.text | safe | linebreaks }}</p>
     </div>
 </div>

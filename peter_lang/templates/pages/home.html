@@ -7,12 +7,15 @@
 <div class="row justify-content-center">
     <div class="col-md-9 text-center">
 	<h1>This is Peter</h1>
-    </div>
-    <div class="col-md-9 text-center">
 	<h5>He's not interested in your cookies</h5>
+    	<br>
     </div>
-    <div class="col-md-9 text-justify">
-	<p><img style="max-width:320px;float:left;padding-right:3%;padding-bottom:3%;padding-top:1.5%" src="/static/images/about/PeterLangPortraitBW.jpg" alt="Peter Lang Portrait BW"></p>
+</div>
+<div class="row justify-content-center">
+    <div class="col-md-3 text-justify">
+	<img class="w-100" src="/static/images/about/PeterLang.jpg" alt="Peter Lang Portrait BW">
+    </div>
+    <div class="col-md-6 text-justify">
 	<p>
 	Peter divides his time between art and animation. Having spent many years making cartoons for children&rsquo;s television (Ludwig, Pigeon Street, Vision On, Rosie and Jim, Tronji, Bonny Banana and Mo and DipDap), his visuals tend to be friendly, accessible and happy. Expect wit, mixed with a sense of the absurd &ndash; a finely judged balance of humour and seriousness.
 	</p>
@@ -30,7 +33,8 @@
 <div class="row justify-content-center">
     <div class="col-md-9 text-center">
 	<h1>Latest news: <a href="articles/{{ latest_article.slug }}">{{ latest_article.name }}</a></h1>
-	<h3>{{ latest_article.created_at }}</h3>
+	<h5>{{ latest_article.created_at|date:"d F Y" }}</h5>
+    	<br>
     </div>
 </div>
 
