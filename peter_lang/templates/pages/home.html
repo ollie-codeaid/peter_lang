@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Peter Lang{% endblock %}
 
@@ -13,7 +14,7 @@
 </div>
 <div class="row justify-content-center">
     <div class="col-md-3 text-justify">
-	<img class="w-100" src="/static/images/about/PeterLang.jpg" alt="Peter Lang Portrait BW">
+	<img class="w-100" src="{% static 'images/about/PeterLang.jpg' %}" alt="Peter Lang Portrait">
     </div>
     <div class="col-md-6 text-justify">
 	<p>
