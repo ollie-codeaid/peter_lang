@@ -14,7 +14,7 @@
 </div>
 <div class="row justify-content-center">
     <div class="col-md-3 text-justify">
-	<img class="w-100" src="{% static 'images/about/PeterLang.jpg' %}" alt="Peter Lang Portrait">
+	<img class="w-100 mb-5" src="{% static 'images/about/PeterLang.jpg' %}" alt="Peter Lang Portrait">
     </div>
     <div class="col-md-6 text-justify">
 	<p>
@@ -45,7 +45,7 @@
 	<p>{{ latest_article.preview_text }}</p>
     </div>
     <div class="col-md-3">
-	<img class="w-100" src="{{ latest_article.preview_picture.image.url }}" alt="{{ latest_article.preview_picture.name }}">
+	<img class="w-100 mb-5" src="{{ latest_article.preview_picture.image.url }}" alt="{{ latest_article.preview_picture.name }}">
     </div>
 </div>
 {% else %}

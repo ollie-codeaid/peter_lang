@@ -5,19 +5,18 @@
 {% block content %}
 {% for article in object_list %}
 <div class="row justify-content-center">
-    <div class="col-md-9 text-center">
+    <div class="col-md-9 text-center mb-3">
 	<h1><a href="{{ article.slug }}">{{ article.name }}</a><h1>
 	<h5>{{ article.created_at|date:"d F Y" }}</h5>
-	<br>
     </div>
 </div>
 
 {% if article.preview_picture %}
 <div class="row justify-content-center">
-    <div class="col-md-6 text-justify">
+    <div class="col-md-6 text-justify mb-3">
 	<p>{{ article.preview_text }}</p>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 mb-3 text-center">
 	<img class=w-100" src="{{ article.preview_picture.image.url }}" alt="{{ article.preview_picture.name }}">
     </div>
 </div>
